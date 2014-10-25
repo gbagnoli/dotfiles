@@ -1,0 +1,58 @@
+[user]
+    name = Giacomo Bagnoli
+    email = gbagnoli@gmail.com
+
+[color]
+    diff = auto
+    branch = auto
+    status = auto
+    interactive = auto
+
+[core]
+   whitespace = trailing-space,space-before-tab
+	excludesfile = /Users/giacomo/.gitignore_global
+
+[apply]
+   whitespace = error-all
+
+[push]
+    default = matching
+
+[alias]
+    ci = commit
+    st = status -s
+    co = checkout
+    cob = checkout -b
+    br = branch
+    graph = log --all --graph --decorate --oneline -n30
+    unadd = reset HEAD
+
+    # stash
+    sl = stash list
+    sa = stash apply
+    ss = stash save
+
+    # LOGS
+    # oneline
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    # with modified files
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    # no color
+    lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
+    # with date
+    lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    # with relative date
+    ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+
+    # DIFFs
+    # show modified files in last commit
+    df = diff
+    dl = "!git ll -1"
+    # Show a diff last commit
+    dlc = diff --cached HEAD^
+    dc = diff --cached
+
+
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
