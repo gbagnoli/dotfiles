@@ -23,6 +23,7 @@ Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'nvie/vim-flake8'
+Plugin 'dougireton/vim-chef'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
