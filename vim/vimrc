@@ -14,11 +14,13 @@ Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-vinegar'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'kien/ctrlp.vim'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'mileszs/ack.vim'
 Plugin 'rking/ag.vim'
 Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
+Plugin 'benekastah/neomake'
 Plugin 'ervandew/supertab'
 Plugin 'godlygeek/tabular'
 Plugin 'altercation/vim-colors-solarized'
@@ -27,12 +29,18 @@ Plugin 'dougireton/vim-chef'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
+autocmd! BufWritePost * Neomake
+
+let g:syntastic_ruby_checkers = ['rubocop', 'mri']
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_eruby_ruby_quiet_messages =
+    \ {'regex': 'possibly useless use of a variable in void context'}
 
 set background=light
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
 let g:solarized_contrast="normal"
-let g:solarized_visibility="normal"
+let g:solarized_visibility="low"
 let g:airline_theme = 'solarized'
 colorscheme solarized
 
@@ -44,6 +52,9 @@ set undodir=$HOME/.vim/undo
 
 " tree view
 let g:netrw_liststyle=3
+
+" no mouse
+set mouse=
 
 set number
 " set relativenumber
@@ -123,14 +134,20 @@ endif
 command! Json execute "%!python -m json.tool"
 
 " go stuff
+set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
+let g:go_fmt_command = "goimports"
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
 au BufRead,BufNewFile *.go set filetype=go
 au FileType go nmap gd <Plug>(go-def)
+" autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
 
 command! Gorun execute "!go run %"
-command! Goimp execute "!goimports -w *.go"
 command! Gotest execute "!go test"
 command! Gobuild execute "!go build"
-
 
 
 " provide some context when editing
@@ -149,8 +166,7 @@ function! MapCR()
 endfunction
 call MapCR()
 
-let mapleader=","
-noremap \ ,
+let mapleader=" "
 
 nmap F :Ack<space>
 map <leader>f :CtrlP<cr>
@@ -187,12 +203,6 @@ nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
-
-" disable cursor keys in normal mode
-" map <Left>  gT
-" map <Right> gt
-" map <Up>    :echo "no!"<cr>
-" map <Down>  :echo "no!"<cr>
 
 " ctag
 nnoremap <f5> :!ctags -R<CR>
