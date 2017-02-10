@@ -26,11 +26,15 @@ Plugin 'godlygeek/tabular'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'nvie/vim-flake8'
 Plugin 'dougireton/vim-chef'
+Plugin 'mattn/webapi-vim'
+Plugin 'urthbound/hound.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 autocmd! BufWritePost * Neomake
 
+let g:hound_base_url = "hound.etsycorp.com"
+let g:hound_port = "80"
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_eruby_ruby_quiet_messages =
