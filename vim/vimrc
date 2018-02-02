@@ -29,6 +29,7 @@ Plugin 'dougireton/vim-chef'
 Plugin 'mattn/webapi-vim'
 Plugin 'urthbound/hound.vim'
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'jamessan/vim-gnupg'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
