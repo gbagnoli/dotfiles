@@ -35,6 +35,15 @@ filetype plugin indent on    " required
 
 " let g:ale_linters = {'go': ['gometalinter']}
 let g:ale_sign_column_always = 1
+let g:ale_fix_on_save = 1
+let g:ale_fixers = {
+\  '*': ['trim_whitespace', 'remove_trailing_lines'],
+\  'python': ['black', 'isort']
+\}
+let g:ale_linters = {'python': ['mypy', 'flake8', 'pylint']}
+let g:ale_python_pylint_options = '--disable=missing-docstring --disable-bad-continuation'
+let g:ale_python_mypy_ignore_invalid_syntax=1
+let g:ale_python_mypy_options='--ignore-missing-imports'
 
 let g:syntastic_ruby_checkers = ['rubocop', 'mri']
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
