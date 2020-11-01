@@ -29,6 +29,7 @@ Plugin 'mattn/webapi-vim'
 " Plugin 'urthbound/hound.vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'jamessan/vim-gnupg'
+Plugin 'rust-lang/rust.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -38,9 +39,12 @@ let g:ale_sign_column_always = 1
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
 \  '*': ['trim_whitespace', 'remove_trailing_lines'],
-\  'python': ['black', 'isort']
+\  'python': ['black', 'isort'],
+\  'cpp': ['clang-format'],
+\  'rust': ['rustfmt'],
 \}
-let g:ale_linters = {'python': ['mypy', 'flake8', 'pylint']}
+let g:ale_rust_rustfmt_options = "--force"
+let g:ale_linters = {'python': ['mypy', 'flake8', 'pylint'], 'rust': ['rls']}
 let g:ale_python_pylint_options = '--disable=missing-docstring --disable-bad-continuation'
 let g:ale_python_mypy_ignore_invalid_syntax=1
 let g:ale_python_mypy_options='--ignore-missing-imports'
