@@ -58,3 +58,5 @@
 	smudge = git-media-smudge %f
 [pull]
   rebase = true
+[init]
+  defaultBranch = main
