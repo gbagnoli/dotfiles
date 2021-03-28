@@ -26,6 +26,7 @@
     br = branch
     graph = log --all --graph --decorate --oneline -n30
     unadd = reset HEAD
+    uncommit = reset --soft HEAD^
 
     # stash
     sl = stash list
