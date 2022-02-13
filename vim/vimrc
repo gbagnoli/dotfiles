@@ -4,8 +4,7 @@ set encoding=utf-8
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'fatih/vim-go'
 Plugin 'tpope/vim-commentary'
@@ -26,12 +25,12 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'nvie/vim-flake8'
 Plugin 'dougireton/vim-chef'
 Plugin 'mattn/webapi-vim'
-" Plugin 'urthbound/hound.vim'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'jamessan/vim-gnupg'
 Plugin 'rust-lang/rust.vim'
-
+Plugin 'cespare/vim-toml'
 call vundle#end()            " required
+
 filetype plugin indent on    " required
 
 " let g:ale_linters = {'go': ['gometalinter']}
