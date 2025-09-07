@@ -1,0 +1,254 @@
+#!/bin/bash
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+# shellcheck disable=SC2039
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+# shellcheck disable=SC2039
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+# shellcheck disable=SC2154
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    if [ -r ~/.dircolors ];then
+      eval "$(dircolors -b ~/.dircolors)"
+    else
+      eval "$(dircolors -b)"
+    fi
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# colored GCC warnings and errors
+#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+  # shellcheck source=/dev/null
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init bash --cmd j)"
+  [ -f /etc/bash_completion.d/zoxide.bash ] && source /etc/bash_completion.d/zoxide.bash
+fi
+
+if command -v fzf &>/dev/null; then
+  fzf --help | grep -q -- --bash && eval "$(fzf --bash)"
+fi
+
+export CLICOLOR=1
+export PATH="$HOME/.local/bin:$PATH"
+if [ -d /opt/android/platform-tools/ ]; then
+  export PATH="$PATH:/opt/android/platform-tools"
+fi
+
+# python
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv > /dev/null; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv init --path)"
+  if command -v pyenv-virtualenv-init > /dev/null; then
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+    eval "$(pyenv virtualenv-init -)"
+  fi
+fi
+
+# GO
+export GO15VENDOREXPERIMENT=1
+export GOPATH=$HOME/workspace/go
+export PATH=$PATH:$GOPATH/bin
+
+alias tmux="tmux -2"
+alias tzbuddy="tzbuddy -z Europe/Dublin -z Europe/Rome -z US/Pacific -z US/Eastern"
+alias tz="tzbuddy -s 7"
+
+create_coord() {
+    [ $# -eq 0 ] && echo 'Usage: create_coord <coordinates>' && return 1
+    [ -f coord.txt ] && echo "FAIL: coord.txt already exists" && return 1
+    echo "$@" > coord.txt
+}
+
+# shellcheck disable=SC2039
+if command -v rbenv &>/dev/null; then
+  eval "$(rbenv init -)"
+fi
+
+if [ -f ~/.local/src/autoenv/activate.sh ]; then
+  # shellcheck disable=SC1090
+  . ~/.local/src/autoenv/activate.sh
+fi
+# shellcheck disable=SC1091
+# shellcheck disable=SC2039
+# Only load liquidprompt in interactive shells, not from a script or from scp
+[[ $- = *i* ]] && [ -f /usr/share/liquidprompt/liquidprompt ] && source /usr/share/liquidprompt/liquidprompt
+
+if [ -d "$HOME/.cargo/bin" ]; then
+  export PATH="$PATH:$HOME/.cargo/bin"
+  # shellcheck source=/dev/null
+  source "$HOME/.cargo/env"
+fi
+
+if [ -f "$HOME/.bashrc.local" ]; then
+  # shellcheck source=/dev/null
+. "$HOME/.bashrc.local"
+fi
+
+if command -v lsb_release && command lsb_release -d 2>&1 | grep -q Ubuntu; then
+apt_update() {
+  yes | (
+    sudo apt update && \
+    sudo apt full-upgrade && \
+    sudo apt autoremove && \
+    sudo apt autoclean
+  )
+  if command -v flatpak >/dev/null; then
+    echo "Updating flatpak"
+    sudo flatpak update --noninteractive -y
+  fi
+}
+fi
+
+download_m3u() {
+  local url
+  local output
+  [ $# -lt 1 ] && echo >&2 "usage: $0 <url> [output]" && return 1
+  url="$1"
+  if [ $# -ge 2 ]; then
+    output="$2"
+    shift
+  else
+    output="${1/.m3u8/.mp4}"
+  fi
+  shift;
+  echo ffmpeg -i "$url" -bsf:a aac_adtstoasc -vcodec copy -c copy "${output}" "$@"
+  ffmpeg -i "$url" -bsf:a aac_adtstoasc -vcodec copy -c copy "${output}" "$@"
+}
+
+exiftool_map_url() {
+  exiftool -config ~/.local/src/exiftool_GPS2MapUrl.config -GoogleMapsUrl "$@"
+}
+
+dd_to_iso() {
+  local output
+  local device
+  local blocksize
+  local volumesize
+  [ $# -lt 1 ] && echo >&2 "usage: $0 <output> [device]" && return 1
+  output="$1"
+  if [ $# -ge 2 ]; then
+    device="$2"
+    shift
+  else
+    device="/dev/cdrom"
+  fi
+  set -o pipefail
+  isoinfo="$(isoinfo -d -i "$device" | grep -i -E 'block size|volume size')"
+  local err=$?
+  if [ $err -ne 0 ]; then
+    echo >&2 "Could not run isoinfo"
+    return $err
+  fi
+  blocksize="$(echo "$isoinfo" | grep -i 'block' | sed -e 's/.*: //')"
+  volumesize="$(echo "$isoinfo" | grep -i 'volume' | sed -e 's/.*: //')"
+  echo "Device: $device, block size: $blocksize, volume size: $volumesize"
+  dd if="$device" bs="$blocksize" count="$volumesize" status=progress | xz -T 0 -c -z - > "$output"
+}
