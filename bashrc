@@ -192,7 +192,7 @@ if [ -f "$HOME/.bashrc.local" ]; then
 . "$HOME/.bashrc.local"
 fi
 
-if command -v lsb_release && command lsb_release -d 2>&1 | grep -q Ubuntu; then
+if command -v lsb_release &>/dev/null && command lsb_release -d 2>&1 | grep -q Ubuntu; then
 apt_update() {
   yes | (
     sudo apt update && \
