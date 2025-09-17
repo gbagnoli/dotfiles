@@ -25,6 +25,6 @@ for dst in "${!filemap[@]}"; do
   ln -sfv "${src}" "${dst}"
 done
 
-brew bundle upgrade --file Brewfile
+brew bundle upgrade --file "${dotfiles}/Brewfile"
 # install vim plugins
 vim +PluginInstall! +qall!
