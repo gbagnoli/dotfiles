@@ -20,8 +20,11 @@ done
 
 for dst in "${!filemap[@]}"; do
   src="${filemap[$dst]}"
-  test -f "$src"
   test -d "$(dirname "$dst")"
-  [ -f "$dst" ] && rm -v "$dst"
+  [ ! -L "$dst" ] && rm -v "$dst"
   ln -sfv "${src}" "${dst}"
 done
+
+brew bundle upgrade --file Brewfile
+# install vim plugins
+vim +PluginInstall! +qall!
