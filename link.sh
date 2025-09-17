@@ -11,6 +11,7 @@ filemap["${HOME}/.config/liquidpromptrc"]="${dotfiles}/liquidpromptrc"
 filemap["${HOME}/.config/nvim/init.vim"]="${dotfiles}/vim/vimrc"
 filemap["${HOME}/.vim"]="${HOME}/.config/nvim"
 filemap["${HOME}/.vimrc"]="${dotfiles}/vim/vimrc"
+filemap["${HOME}/.ssh/authorized_keys"]="${dotfiles}/ssh/authorized_keys"
 
 declare -a simple=(inputrc gitconfig bashrc gitignore_global tmux.conf profile distrobox.ini)
 for conf in "${simple[@]}"; do
