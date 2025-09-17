@@ -140,16 +140,13 @@ if [ -d /opt/android/platform-tools/ ]; then
   export PATH="$PATH:/opt/android/platform-tools"
 fi
 
-# python
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if command -v pyenv > /dev/null; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv init --path)"
-  if command -v pyenv-virtualenv-init > /dev/null; then
-    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-    eval "$(pyenv virtualenv-init -)"
+BREW_D="/home/linuxbrew/.linuxbrew"
+if [ -d "${BREW_D}" ]; then
+  rustup="$("${BREW_D}"/bin/brew --prefix rustup)/bin"
+  if [ -d "$rustup" ]; then
+    export PATH="$PATH:${rustup}"
   fi
+  export PATH="$PATH:${BREW_D}/bin"
 fi
 
 # GO
@@ -179,7 +176,7 @@ fi
 # shellcheck disable=SC1091
 # shellcheck disable=SC2039
 # Only load liquidprompt in interactive shells, not from a script or from scp
-[[ $- = *i* ]] && [ -f /usr/share/liquidprompt/liquidprompt ] && source /usr/share/liquidprompt/liquidprompt
+[[ $- = *i* ]] && [ -f "${BREW_D}"/share/liquidprompt ] && source "${BREW_D}"/share/liquidprompt
 
 if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$PATH:$HOME/.cargo/bin"

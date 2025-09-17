@@ -4,6 +4,7 @@ set -euo pipefail
 
 dotfiles="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
+"${dotfiles}"/download.sh
 declare -A filemap
 filemap["${HOME}/.config/flake8"]="${dotfiles}/flake8"
 filemap["${HOME}/.config/liquidpromptrc"]="${dotfiles}/liquidpromptrc"
