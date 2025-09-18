@@ -33,4 +33,5 @@ fi
 
 if command -v uv &>/dev/null; then
    uv tool install git+https://github.com/gbagnoli/GPicSync@cli
+   uv tool install git+https://github.com/gbagnoli/photo_process
 fi
