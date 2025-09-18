@@ -126,16 +126,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if command -v zoxide &>/dev/null; then
-  eval "$(zoxide init bash --cmd j)"
-  # shellcheck source=/dev/null
-  [ -f /etc/bash_completion.d/zoxide.bash ] && source /etc/bash_completion.d/zoxide.bash
-fi
-
-if command -v fzf &>/dev/null; then
-  fzf --help | grep -q -- --bash && eval "$(fzf --bash)"
-fi
-
 export CLICOLOR=1
 export PATH="$HOME/.local/bin:$PATH"
 if [ -d /opt/android/platform-tools/ ]; then
@@ -158,6 +148,7 @@ if [ -d "${BREW_D}" ]; then
       [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
     done
   fi
+
 
   # setup auto-bundle-dump utility
   brew_bundle_dump() {
@@ -199,10 +190,6 @@ export GO15VENDOREXPERIMENT=1
 export GOPATH=$HOME/workspace/go
 export PATH=$PATH:$GOPATH/bin
 
-alias tmux="tmux -2"
-alias tzbuddy="tzbuddy -z Europe/Dublin -z Europe/Rome -z US/Pacific -z US/Eastern"
-alias tz="tzbuddy -s 7"
-
 create_coord() {
     [ $# -eq 0 ] && echo 'Usage: create_coord <coordinates>' && return 1
     [ -f coord.txt ] && echo "FAIL: coord.txt already exists" && return 1
@@ -214,14 +201,30 @@ if command -v rbenv &>/dev/null; then
   eval "$(rbenv init -)"
 fi
 
-if [ -f ~/.local/src/autoenv/activate.sh ]; then
-  # shellcheck disable=SC1090
-  . ~/.local/src/autoenv/activate.sh
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init bash --cmd j)"
+  # shellcheck source=/dev/null
+  [ -f /etc/bash_completion.d/zoxide.bash ] && source /etc/bash_completion.d/zoxide.bash
 fi
+
+if command -v fzf &>/dev/null; then
+  fzf --help | grep -q -- --bash && eval "$(fzf --bash)"
+fi
+
 # shellcheck disable=SC1091
 # shellcheck disable=SC2039
 # Only load liquidprompt in interactive shells, not from a script or from scp
 [[ $- = *i* ]] && [ -f "${BREW_D}"/share/liquidprompt ] && source "${BREW_D}"/share/liquidprompt
+
+if [ -f "${BREW_D}/opt/autoenv/activate.sh" ]; then
+  # shellcheck source=/dev/null
+  source "${BREW_D}/opt/autoenv/activate.sh"
+fi
+
+if brew --prefix rustup &>/dev/null; then
+  _pfx="$(brew --prefix rustup)/bin"
+  export PATH="${_pfx}:${PATH}"
+fi
 
 if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$PATH:$HOME/.cargo/bin"
@@ -233,6 +236,10 @@ if [ -f "$HOME/.bashrc.local" ]; then
   # shellcheck source=/dev/null
 . "$HOME/.bashrc.local"
 fi
+
+alias tmux="tmux -2"
+alias tzbuddy="tzbuddy -z Europe/Dublin -z Europe/Rome -z US/Pacific -z US/Eastern"
+alias tz="tzbuddy -s 7"
 
 if command -v lsb_release &>/dev/null && command lsb_release -d 2>&1 | grep -q Ubuntu; then
 apt_update() {
