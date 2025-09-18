@@ -185,6 +185,7 @@ if [ -d "${BREW_D}" ]; then
 
      # update also uv tools
      if command -v uv &>/dev/null; then
+       echo >&2 "* uv tool upgrade --all"
        uv tool upgrade --all
      fi
   }
