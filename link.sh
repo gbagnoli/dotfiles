@@ -25,6 +25,12 @@ for dst in "${!filemap[@]}"; do
   ln -sfv "${src}" "${dst}"
 done
 
-brew bundle upgrade --file "${dotfiles}/Brewfile"
-# install vim plugins
-vim +PluginInstall! +qall!
+if command -v brew &>/dev/null; then
+  brew bundle upgrade --file "${dotfiles}/Brewfile"
+  # install vim plugins
+  vim +PluginInstall! +qall!
+fi
+
+if command -v uv &>/dev/null; then
+   uv tool install git+https://github.com/gbagnoli/GPicSync@cli
+fi
