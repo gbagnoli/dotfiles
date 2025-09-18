@@ -28,7 +28,15 @@ done
 if command -v brew &>/dev/null; then
   brew bundle upgrade --file "${dotfiles}/Brewfile"
   # install vim plugins
-  vim +PluginInstall! +qall!
+fi
+
+if command -v vim &>/dev/null; then
+  if [ ! -d ~/.config/nvim/bundle/Vundle.vim ]; then
+    mkdir -p ~/.config/nvim/bundle/
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+  fi
+  echo "Updating/installing vim plugins"
+  vim +PluginInstall! +qall! &>/dev/null
 fi
 
 if command -v uv &>/dev/null; then
