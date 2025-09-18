@@ -21,7 +21,7 @@ done
 for dst in "${!filemap[@]}"; do
   src="${filemap[$dst]}"
   test -d "$(dirname "$dst")"
-  [ ! -L "$dst" ] && rm -v "$dst"
+  [ ! -L "$dst" ] && rm -fv "$dst"
   ln -sfv "${src}" "${dst}"
 done
 
