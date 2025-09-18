@@ -154,7 +154,8 @@ if [ -d "${BREW_D}" ]; then
       echo >&2 "* Updating Brewfile at ~/workspace/dotfiles/Brewfile"
       echo >&2 "  brew bundle dump --force --file ~/workspace/dotfiles/Brewfile"
       brew bundle dump --force --file ~/workspace/dotfiles/Brewfile || return 1
-      echo >&2 "* Pulling and committing git"
+      git diff --exit-code Brewfile && return 0
+      echo >&2 "* Committing Brewfile to git"
       git add Brewfile && \
          git commit -m 'Auto update Brewfile'\
          && git push
