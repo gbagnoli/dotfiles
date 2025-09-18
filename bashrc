@@ -119,14 +119,16 @@ fi
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
+    source /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+    # shellcheck source=/dev/null
+    source /etc/bash_completion
   fi
 fi
 
 if command -v zoxide &>/dev/null; then
   eval "$(zoxide init bash --cmd j)"
+  # shellcheck source=/dev/null
   [ -f /etc/bash_completion.d/zoxide.bash ] && source /etc/bash_completion.d/zoxide.bash
 fi
 
@@ -142,11 +144,22 @@ fi
 
 BREW_D="/home/linuxbrew/.linuxbrew"
 if [ -d "${BREW_D}" ]; then
-  rustup="$("${BREW_D}"/bin/brew --prefix rustup)/bin"
-  if [ -d "$rustup" ]; then
-    export PATH="$PATH:${rustup}"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+  # setup bash completions
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]] && ! shopt -oq posix; then
+    # shellcheck source=/dev/null
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*
+    do
+      # shellcheck source=/dev/null
+      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+    done
   fi
-  export PATH="$PATH:${BREW_D}/bin"
+
+  # setup auto-bundle-dump utility
   brew_bundle_dump() {
     cd ~/workspace/dotfiles/ || return 1
     if [ -z "$(git status --porcelain)" ]; then
@@ -154,7 +167,7 @@ if [ -d "${BREW_D}" ]; then
       echo >&2 "* Updating Brewfile at ~/workspace/dotfiles/Brewfile"
       echo >&2 "  brew bundle dump --force --file ~/workspace/dotfiles/Brewfile"
       brew bundle dump --force --file ~/workspace/dotfiles/Brewfile || return 1
-      git diff --exit-code Brewfile && return 0
+      git diff --exit-code Brewfile && echo >&2 "* Brewfile not updated, nothing else to do" && return 0
       echo >&2 "* Committing Brewfile to git"
       git add Brewfile && \
          git commit -m 'Auto update Brewfile'\
@@ -180,7 +193,6 @@ if [ -d "${BREW_D}" ]; then
      fi
   }
 fi
-
 
 # GO
 export GO15VENDOREXPERIMENT=1
