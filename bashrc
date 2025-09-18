@@ -182,6 +182,11 @@ if [ -d "${BREW_D}" ]; then
      else
       echo >&2 '** !!! cannot find brew file at ~/workspace/dotfiles/Brewfile'
      fi
+
+     # update also uv tools
+     if command -v uv &>/dev/null; then
+       uv tool upgrade --all
+     fi
   }
 fi
 
