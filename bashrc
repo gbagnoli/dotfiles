@@ -147,7 +147,39 @@ if [ -d "${BREW_D}" ]; then
     export PATH="$PATH:${rustup}"
   fi
   export PATH="$PATH:${BREW_D}/bin"
+  brew_bundle_dump() {
+    cd ~/workspace/dotfiles/ || return 1
+    if [ -z "$(git status --porcelain)" ]; then
+      git pull --rebase || return 1
+      echo >&2 "* Updating Brewfile at ~/workspace/dotfiles/Brewfile"
+      echo >&2 "  brew bundle dump --force --file ~/workspace/dotfiles/Brewfile"
+      brew bundle dump --force --file ~/workspace/dotfiles/Brewfile || return 1
+      echo >&2 "* Pulling and committing git"
+      git add Brewfile && \
+         git commit -m 'Auto update Brewfile'\
+         && git push
+      return $?
+    else
+      echo >&2 "** !!! git directory is not clean"
+      return 1
+    fi
+  }
+
+  brew_update() {
+     echo >&2 "* brew update"
+     brew update
+     echo >&2 "* brew upgrade"
+     brew upgrade
+     echo >&2 "* brew cleanup"
+     brew cleanup
+     if [ -f ~/workspace/dotfiles/Brewfile ]; then
+       brew_bundle_dump || echo >&2 "** !!! Failed to dump brew bundle"
+     else
+      echo >&2 '** !!! cannot find brew file at ~/workspace/dotfiles/Brewfile'
+     fi
+  }
 fi
+
 
 # GO
 export GO15VENDOREXPERIMENT=1
