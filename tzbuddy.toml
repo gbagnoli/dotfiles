@@ -1,0 +1,14 @@
+timezones = [
+    "Europe/Dublin",
+    "Europe/Rome",
+    "US/Pacific",
+    "US/Eastern",
+    "Europe/Rome",
+    "UTC",
+]
+noorder = false
+inverseorder = false
+noheader = false
+ampm = false
+save = true
+noconfig = false

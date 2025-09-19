@@ -244,8 +244,7 @@ if [ -f "$HOME/.bashrc.local" ]; then
 fi
 
 alias tmux="tmux -2"
-alias tzbuddy="tzbuddy -z Europe/Dublin -z Europe/Rome -z US/Pacific -z US/Eastern"
-alias tz="tzbuddy -s 7"
+alias tz="tzbuddy -s 6"
 
 if command -v lsb_release &>/dev/null && command lsb_release -d 2>&1 | grep -q Ubuntu; then
 apt_update() {

@@ -9,9 +9,10 @@ declare -A filemap
 filemap["${HOME}/.config/flake8"]="${dotfiles}/flake8"
 filemap["${HOME}/.config/liquidpromptrc"]="${dotfiles}/liquidpromptrc"
 filemap["${HOME}/.config/nvim/init.vim"]="${dotfiles}/vim/vimrc"
+filemap["${HOME}/.config/tzbuddy/tzbuddy.toml"]="${dotfiles}/tzbuddy.toml"
+filemap["${HOME}/.ssh/authorized_keys"]="${dotfiles}/ssh/authorized_keys"
 filemap["${HOME}/.vim"]="${HOME}/.config/nvim"
 filemap["${HOME}/.vimrc"]="${dotfiles}/vim/vimrc"
-filemap["${HOME}/.ssh/authorized_keys"]="${dotfiles}/ssh/authorized_keys"
 
 declare -a simple=(inputrc gitconfig bashrc gitignore_global tmux.conf profile distrobox.ini)
 for conf in "${simple[@]}"; do
