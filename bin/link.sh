@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-dotfiles="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+dotfiles="$(dirname "$script_dir")"
 
-"${dotfiles}"/download.sh
 declare -A filemap
 filemap["${HOME}/.config/flake8"]="${dotfiles}/flake8"
 filemap["${HOME}/.config/liquidpromptrc"]="${dotfiles}/liquidpromptrc"
@@ -22,25 +22,6 @@ done
 for dst in "${!filemap[@]}"; do
   src="${filemap[$dst]}"
   test -d "$(dirname "$dst")"
-  [ ! -L "$dst" ] && rm -fv "$dst"
-  ln -sfv "${src}" "${dst}"
+  [ ! -L "$dst" ] && echo -n >&2 "* " && rm -fv "$dst"
+  echo -n >&2 "* " && ln -sfv "${src}" "${dst}"
 done
-
-if command -v brew &>/dev/null; then
-  brew bundle upgrade --file "${dotfiles}/Brewfile"
-  # install vim plugins
-fi
-
-if command -v vim &>/dev/null; then
-  if [ ! -d ~/.config/nvim/bundle/Vundle.vim ]; then
-    mkdir -p ~/.config/nvim/bundle/
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
-  fi
-  echo "Updating/installing vim plugins"
-  vim +PluginInstall! +qall! &>/dev/null
-fi
-
-if command -v uv &>/dev/null; then
-   uv tool install git+https://github.com/gbagnoli/GPicSync@cli
-   uv tool install git+https://github.com/gbagnoli/photo_process
-fi
