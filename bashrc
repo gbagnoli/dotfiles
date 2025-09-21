@@ -258,6 +258,10 @@ apt_update() {
     echo "Updating flatpak"
     sudo flatpak update --noninteractive -y
   fi
+
+  if command -v brew >/dev/null; then
+    brew_update
+  fi
 }
 fi
 
