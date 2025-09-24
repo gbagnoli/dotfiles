@@ -16,7 +16,7 @@ brew "glab"
 brew "liquidprompt"
 brew "neovim"
 brew "rbenv"
-brew "rename"
+brew "rename", link: false
 brew "ripgrep"
 brew "rust-analyzer"
 brew "rustup"
