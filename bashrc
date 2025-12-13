@@ -314,7 +314,7 @@ dd_to_iso() {
 
 wake_ubik() {
   bin=""
-  if command -v ethwewake &>/dev/null; then
+  if command -v etherwake &>/dev/null; then
     bin="etherwake"
   fi
   if command -v ether-wake &>/dev/null; then
