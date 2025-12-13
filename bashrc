@@ -310,3 +310,4 @@ dd_to_iso() {
   echo "Device: $device, block size: $blocksize, volume size: $volumesize"
   dd if="$device" bs="$blocksize" count="$volumesize" status=progress | xz -T 0 -c -z - > "$output"
 }
+[ -x /usr/local/bin/ollama ] && alias ollama="sudo ollama"
