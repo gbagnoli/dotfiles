@@ -311,3 +311,17 @@ dd_to_iso() {
   dd if="$device" bs="$blocksize" count="$volumesize" status=progress | xz -T 0 -c -z - > "$output"
 }
 [ -x /usr/local/bin/ollama ] && alias ollama="sudo ollama"
+
+wake_ubik() {
+  bin=""
+  if command -v ethwewake &>/dev/null; then
+    bin="etherwake"
+  fi
+  if command -v ether-wake &>/dev/null; then
+    bin="ether-wake"
+  fi
+  [ -z "$bin" ] && echo >&2 "cannot find etherwake or ether-wake" && return 1
+  MAC="2c:f0:5d:0e:a6:28"
+  echo "running: $bin $MAC"
+  sudo "$bin" "$MAC"
+}
