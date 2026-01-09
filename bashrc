@@ -311,6 +311,7 @@ dd_to_iso() {
   dd if="$device" bs="$blocksize" count="$volumesize" status=progress | xz -T 0 -c -z - > "$output"
 }
 [ -x /usr/local/bin/ollama ] && alias ollama="sudo ollama"
+export OLLAMA_API_BASE=http://100.127.131.79:11434
 
 wake_ubik() {
   bin=""
