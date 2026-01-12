@@ -29,6 +29,7 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'jamessan/vim-gnupg'
 Plugin 'rust-lang/rust.vim'
 Plugin 'cespare/vim-toml'
+Plugin 'elzr/vim-json'
 call vundle#end()            " required
 
 filetype plugin indent on    " required
@@ -38,11 +39,12 @@ let g:ale_sign_column_always = 1
 let g:ale_fix_on_save = 1
 let g:ale_fixers = {
 \  '*': ['trim_whitespace', 'remove_trailing_lines'],
-\  'python': ['black', 'isort'],
+\  'python': ['ruff_format'],
 \  'cpp': ['clang-format'],
 \  'rust': ['rustfmt'],
+\  'json': ['prettier'],
 \}
-let g:ale_linters = {'python': ['mypy', 'flake8', 'pylint'], 'rust': ['analyzer']}
+let g:ale_linters = {'python': ['mypy', 'ruff', 'pylint'], 'rust': ['analyzer']}
 let g:ale_python_pylint_options = '--disable=missing-docstring --disable-bad-continuation'
 let g:ale_python_mypy_ignore_invalid_syntax=1
 let g:ale_python_mypy_options='--ignore-missing-imports'
@@ -124,9 +126,6 @@ if has("autocmd")
   " Make sure all markdown files have the correct filetype set and setup wrapping
   au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
 
-  " Treat JSON files like JavaScript
-  au BufNewFile,BufRead *.json set ft=javascript
-
   " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
   au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
 
@@ -147,7 +146,7 @@ if has("autocmd")
 endif
 
 "json
-command! Json execute "%!python -m json.tool"
+"command! Json execute "%!python -m json.tool"
 
 " go stuff
 set rtp+=$GOPATH/src/github.com/golang/lint/misc/vim
@@ -399,4 +398,3 @@ function! StripTrailingWhitespace()
   let @/=_s
   call cursor(l, c)
 endfunction
-
