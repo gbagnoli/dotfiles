@@ -40,7 +40,7 @@ fi
 
 
 if command -v flatpak &>/dev/null; then
-  xargs flatpak install --system -y < "$dotfiles/flatpak.txt"
+  # xargs flatpak install --system -y < "$dotfiles/flatpak.txt"
   # use 'EOL' to avoid variable expansion
   cat <<'EOL' | create_wrapper keepassxc-cli
 #!/bin/bash
