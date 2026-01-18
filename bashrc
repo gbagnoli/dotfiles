@@ -179,12 +179,6 @@ if [ -d "${BREW_D}" ]; then
      brew upgrade
      echo >&2 "* brew cleanup"
      brew cleanup
-     if [ -f ~/workspace/dotfiles/Brewfile ]; then
-       brew_bundle_dump || echo >&2 "** !!! Failed to dump brew bundle"
-     else
-      echo >&2 '** !!! cannot find brew file at ~/workspace/dotfiles/Brewfile'
-     fi
-
      # update also uv tools
      if command -v uv &>/dev/null; then
        echo >&2 "* uv tool upgrade --all"
