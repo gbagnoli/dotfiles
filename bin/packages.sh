@@ -33,7 +33,6 @@ fi
 if command -v uv &>/dev/null; then
   echo >&2 "* Installing uv tools"
    uv tool install git+https://github.com/gbagnoli/GPicSync@cli
-   uv tool install git+https://github.com/gbagnoli/photo_process
 else
   echo >&2 "!! Skipping install of uv tools uv is not in path"
 fi
