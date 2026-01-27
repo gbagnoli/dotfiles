@@ -13,6 +13,7 @@ filemap["${HOME}/.config/tzbuddy/tzbuddy.toml"]="${dotfiles}/tzbuddy.toml"
 filemap["${HOME}/.ssh/authorized_keys"]="${dotfiles}/ssh/authorized_keys"
 filemap["${HOME}/.vim"]="${HOME}/.config/nvim"
 filemap["${HOME}/.vimrc"]="${dotfiles}/vim/vimrc"
+filemap["${HOME}/.config/yamllint/config"]="${dotfiles}/yamllint"
 
 declare -a simple=(inputrc gitconfig bashrc gitignore_global tmux.conf profile distrobox.ini)
 for conf in "${simple[@]}"; do

@@ -129,6 +129,10 @@ if has("autocmd")
   " make Python follow PEP8 ( http://www.python.org/dev/peps/pep-0008/ )
   au FileType python set softtabstop=4 tabstop=4 shiftwidth=4 textwidth=79
 
+  " butane files are yaml
+  au BufRead,BufNewFile *.bu :setlocal filetype=yaml
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
   " Remember last location in file, but not for commit messages.
   " see :help last-position-jump
   au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$")
