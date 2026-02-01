@@ -30,6 +30,6 @@ done
 for dst in "${!filemap[@]}"; do
   src="${filemap[$dst]}"
   test -d "$(dirname "$dst")" || mkdir -pv "$(dirname "$dst")"
-  [ ! -L "$dst" ] && echo -n >&2 "* " && rm -fv "$dst"
+  [ ! -L "$dst" ] && echo -n >&2 "* removing $dst" && rm -fv "$dst"
   echo -n >&2 "* " && ln -sfv "${src}" "${dst}"
 done

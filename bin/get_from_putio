@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -euo pipefail
+
+[ $# -lt 1 ] && echo "usage: $0 <what> [what [what [...]]]" >&2 && exit 1
+
+for what in "$@"; do
+  rclone copy -v putio:"$what" "$what"
+done
