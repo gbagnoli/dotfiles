@@ -202,7 +202,13 @@ fi
 # shellcheck disable=SC1091
 # shellcheck disable=SC2039
 # Only load liquidprompt in interactive shells, not from a script or from scp
-[[ $- = *i* ]] && [ -f "${BREW_D}"/share/liquidprompt ] && source "${BREW_D}"/share/liquidprompt
+if [[ $- = *i* ]]; then
+  if [ -f "${BREW_D}"/share/liquidprompt ]; then
+    source "${BREW_D}"/share/liquidprompt
+  elif [ -f /usr/share/liquidprompt/liquidprompt ]; then
+    source /usr/share/liquidprompt/liquidprompt
+  fi
+fi
 
 if [ -f "${BREW_D}/opt/autoenv/activate.sh" ]; then
   # shellcheck source=/dev/null
