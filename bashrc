@@ -171,20 +171,6 @@ if [ -d "${BREW_D}" ]; then
       return 1
     fi
   }
-
-  brew_update() {
-     echo >&2 "* brew update"
-     brew update
-     echo >&2 "* brew upgrade"
-     brew upgrade
-     echo >&2 "* brew cleanup"
-     brew cleanup
-     # update also uv tools
-     if command -v uv &>/dev/null; then
-       echo >&2 "* uv tool upgrade --all"
-       uv tool upgrade --all
-     fi
-  }
 fi
 
 # GO
@@ -255,8 +241,8 @@ apt_update() {
     sudo flatpak update --noninteractive -y
   fi
 
-  if command -v brew >/dev/null; then
-    brew_update
+  if command -v brew-update >/dev/null; then
+    brew-update
   fi
 }
 fi

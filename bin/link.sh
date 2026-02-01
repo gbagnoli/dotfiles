@@ -14,6 +14,7 @@ filemap["${HOME}/.ssh/authorized_keys"]="${dotfiles}/ssh/authorized_keys"
 filemap["${HOME}/.vim"]="${HOME}/.config/nvim"
 filemap["${HOME}/.vimrc"]="${dotfiles}/vim/vimrc"
 filemap["${HOME}/.config/yamllint/config"]="${dotfiles}/yamllint"
+filemap["${HOME}/.local/bin/brew-update"]="${dotfiles}/brew-update"
 
 declare -a simple=(inputrc gitconfig bashrc gitignore_global tmux.conf profile distrobox.ini)
 for conf in "${simple[@]}"; do
@@ -22,7 +23,7 @@ done
 
 for dst in "${!filemap[@]}"; do
   src="${filemap[$dst]}"
-  test -d "$(dirname "$dst")"
+  test -d "$(dirname "$dst")" || mkdir -pv "$(dirname "$dst")"
   [ ! -L "$dst" ] && echo -n >&2 "* " && rm -fv "$dst"
   echo -n >&2 "* " && ln -sfv "${src}" "${dst}"
 done

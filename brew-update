@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if command -v brew >/dev/null; then
+   echo >&2 "* brew update"
+   brew update
+   echo >&2 "* brew upgrade"
+   brew upgrade
+   echo >&2 "* brew cleanup"
+   brew cleanup
+   # update also uv tools
+   if command -v uv &>/dev/null; then
+     echo >&2 "* uv tool upgrade --all"
+     uv tool upgrade --all
+   fi
+fi
