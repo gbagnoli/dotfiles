@@ -161,11 +161,16 @@ if [ -d "${BREW_D}" ]; then
       echo >&2 "  brew bundle dump --force --file ~/workspace/dotfiles/Brewfile"
       brew bundle dump --force --file ~/workspace/dotfiles/Brewfile || return 1
       git diff --exit-code Brewfile && echo >&2 "* Brewfile not updated, nothing else to do" && return 0
-      echo >&2 "* Committing Brewfile to git"
-      git add Brewfile && \
-         git commit -m 'Auto update Brewfile'\
-         && git push
-      return $?
+      if [ $# -gt 1 ] && [[ "$1" == "commit" ]]; then
+        echo >&2 "* Committing Brewfile to git"
+        git add Brewfile && \
+           git commit -m 'Auto update Brewfile'\
+           && git push
+        return $?
+      else
+        echo >&2 "* Brewfile updated, please review the changes"
+        return 0
+      fi
     else
       echo >&2 "** !!! git directory is not clean"
       return 1
