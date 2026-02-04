@@ -6,6 +6,7 @@ script_dir="${dotfiles}/scripts"
 brew_profiles_dir="${dotfiles}/brew"
 brew_profiles=()
 brew_profile=""
+install_vim_plugins=1
 
 shell_join() {
   local arg
@@ -38,18 +39,19 @@ usage() {
   exit_code=0
   [ $# -ge 1 ] && exit_code="$1" && shift
   [ $# -ge 1 ] && echo -e >&2 "$@" && echo >&2
-  echo -e >&2 "Usage: $(basename "$0") [-h] -b <brew_profile>"
+  echo -e >&2 "Usage: $(basename "$0") [-hV] -b <brew_profile>"
   echo -e >&2
   echo -e >&2 "Options"
   echo -e >&2 "  -h: print this help"
   echo -e >&2 "  -b: brew profile to use. available profiles: $(shell_join "${brew_profiles[@]}")"
+  echo -e >&2 "  -V: skip vim plugins"
   if [ -n "$brew_profile" ]; then
     echo -e >&2 "      current brew profile discovered: $brew_profile"
   fi
   exit "$exit_code"
 }
 
-while getopts "b:h" opt; do
+while getopts "b:hV" opt; do
   case $opt in
     b)
       brew_profile="$OPTARG"
@@ -57,6 +59,7 @@ while getopts "b:h" opt; do
           usage 1 "ERROR: Could not find profile ${brew_profile}"
       fi
       ;;
+    V) install_vim_plugins=0 ;;
     h) usage 0;;
     \?) echo "Invalid option -$OPTARG" >&2; exit 1 ;;
   esac
@@ -66,4 +69,4 @@ done
 
 "${script_dir}"/download.sh
 "${script_dir}"/link.sh "$brew_profile"
-"${script_dir}"/packages.sh "$brew_profile"
+"${script_dir}"/packages.sh "$brew_profile" "$install_vim_plugins"

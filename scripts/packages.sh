@@ -7,6 +7,7 @@ dotfiles="$(dirname "$script_dir")"
 bindir="${HOME}/.local/bin"
 
 brew_profile="$1"
+install_vim_plugins="$2"
 
 create_wrapper() {
   cat >"${bindir}/$1"
@@ -24,7 +25,7 @@ else
   echo >&2 "!! Skipping install of brew bundle as brew is not in path"
 fi
 
-if command -v vim &>/dev/null; then
+if command -v vim &>/dev/null && [ "$install_vim_plugins" -eq "1" ]; then
   if [ ! -d ~/.config/nvim/bundle/Vundle.vim ]; then
     echo >&2 "* Installing vundle"
     mkdir -p ~/.config/nvim/bundle/
