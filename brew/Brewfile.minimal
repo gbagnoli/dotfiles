@@ -1,6 +1,4 @@
-tap "charmbracelet/tap"
 tap "gbagnoli/tzbuddy"
-tap "mistertea/et"
 brew "autoenv"
 brew "bash-preexec"
 brew "bat"
