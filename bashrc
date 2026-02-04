@@ -154,26 +154,30 @@ if [ -d "${BREW_D}" ]; then
 
   # setup auto-bundle-dump utility
   brew_bundle_dump() {
+    local commit
     cd ~/workspace/dotfiles/ || return 1
     if [ -z "$(git status --porcelain)" ]; then
       git pull --rebase || return 1
-      echo >&2 "* Updating Brewfile at ~/workspace/dotfiles/Brewfile"
-      echo >&2 "  brew bundle dump --force --file ~/workspace/dotfiles/Brewfile"
-      brew bundle dump --force --file ~/workspace/dotfiles/Brewfile || return 1
-      git diff --exit-code Brewfile && echo >&2 "* Brewfile not updated, nothing else to do" && return 0
-      if [ $# -gt 1 ] && [[ "$1" == "commit" ]]; then
-        echo >&2 "* Committing Brewfile to git"
-        git add Brewfile && \
-           git commit -m 'Auto update Brewfile'\
-           && git push
-        return $?
-      else
-        echo >&2 "* Brewfile updated, please review the changes"
-        return 0
-      fi
+      commit=true
     else
-      echo >&2 "** !!! git directory is not clean"
-      return 1
+      echo >&2 "** !!! git directory is not clean. disabling commit"
+      commit=false
+    fi
+
+    brewfile="$(readlink -f "${HOME}/.config/Brewfile")"
+    echo >&2 "* Updating Brewfile at $brewfile"
+    echo >&2 "  brew bundle dump --force --no-cargo --no-flatpak --file ${brewfile}"
+    brew bundle dump --force --no-cargo --no-flatpak --file "${brewfile}" || return 1
+    git diff --exit-code "$brewfile" && echo >&2 "* Brewfile not updated, nothing else to do" && return 0
+    if $commit && [ $# -gt 1 ] && [[ "$1" == "commit" ]]; then
+      echo >&2 "* Committing Brewfile to git"
+      git add "$brewfile" && \
+         git commit -m 'Auto update Brewfile'\
+         && git push
+      return $?
+    else
+      echo >&2 "* Brewfile updated, please review the changes"
+      return 0
     fi
   }
 fi

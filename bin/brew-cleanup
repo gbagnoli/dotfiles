@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if command -v brew >/dev/null; then
+  if [ -L "${HOME}/.config/Brewfile" ]; then
+    brewfile="$(readlink -f "${HOME}/.config/Brewfile")"
+    if [ -f "$brewfile" ]; then
+      echo >&2 "* Cleanup brew from $brewfile"
+      brew bundle cleanup --file "${brewfile}" --force --no-flatpak --no-cargo
+    fi
+  fi
+fi

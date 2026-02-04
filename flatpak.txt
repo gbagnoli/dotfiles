@@ -6,7 +6,6 @@ com.google.Chrome
 com.spotify.Client
 io.github.nokse22.high-tide
 nl.sarine.gpx-viewer
-nl.sarine.gpx-viewer
 org.gimp.GIMP
 org.inkscape.Inkscape
 org.kde.kgeotag
