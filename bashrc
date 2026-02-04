@@ -243,6 +243,11 @@ fi
 alias tmux="tmux -2"
 alias tz="tzbuddy -s 6"
 
+if command -v vim; then
+  EDITOR="$(command -v vim)"
+  export EDITOR
+fi
+
 if command -v lsb_release &>/dev/null && command lsb_release -d 2>&1 | grep -q Ubuntu; then
 apt_update() {
   yes | (
