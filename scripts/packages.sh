@@ -16,6 +16,10 @@ create_wrapper() {
 if command -v brew &>/dev/null; then
   echo >&2 "* Installing/upgrade brew bundle from ${dotfiles}/brew/Brewfile.${brew_profile}"
   brew bundle upgrade --file "${dotfiles}/brew/Brewfile.${brew_profile}"
+  if grep -q '"rust"' "${dotfiles}/brew/Brewfile.${brew_profile}" && command -v rustup &>/dev/null; then
+    echo >&2 "* Linking brew rust toolchain in rustup as 'system'"
+    rustup toolchain link system  "$(brew --prefix rust)"
+  fi
 else
   echo >&2 "!! Skipping install of brew bundle as brew is not in path"
 fi
