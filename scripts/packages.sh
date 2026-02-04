@@ -6,14 +6,16 @@ script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 dotfiles="$(dirname "$script_dir")"
 bindir="${HOME}/.local/bin"
 
+brew_profile="$1"
+
 create_wrapper() {
   cat >"${bindir}/$1"
   chmod +x "${bindir}/$1"
 }
 
 if command -v brew &>/dev/null; then
-  echo >&2 "* Installing/upgrade brew bundle from ${dotfiles}/Brewfile"
-  brew bundle upgrade --file "${dotfiles}/Brewfile"
+  echo >&2 "* Installing/upgrade brew bundle from ${dotfiles}/brew/Brewfile.${brew_profile}"
+  brew bundle upgrade --file "${dotfiles}/brew/Brewfile.${brew_profile}"
 else
   echo >&2 "!! Skipping install of brew bundle as brew is not in path"
 fi
