@@ -243,7 +243,7 @@ fi
 alias tmux="tmux -2"
 alias tz="tzbuddy -s 6"
 
-if command -v vim; then
+if command -v vim &>/dev/null; then
   EDITOR="$(command -v vim)"
   export EDITOR
 fi
