@@ -7,7 +7,8 @@ dotfiles="$(dirname "$script_dir")"
 bindir="${HOME}/.local/bin"
 
 brew_profile="$1"
-install_vim_plugins="$2"
+install_vim_plugins="${2:-1}"
+install_skills="${3:-1}"
 
 create_wrapper() {
   cat >"${bindir}/$1"
@@ -37,12 +38,35 @@ else
   echo >&2 "!! Skipping install of vim plugins as vim is not in path"
 fi
 
-if command -v uv &>/dev/null; then
-  echo >&2 "* Installing uv tools"
-   uv tool install git+https://github.com/gbagnoli/GPicSync@cli
-else
-  echo >&2 "!! Skipping install of uv tools uv is not in path"
+if command -v skills &>/dev/null && [ "$install_skills" -eq 1 ]; then
+  echo >&2 "Installing skills"
+  declare -A skills
+  skills["find-skills"]="vercel-labs/skills@find-skills"
+  skills["gh-cli"]="github/awesome-copilot"
+  skills["git-commit"]="github/awesome-copilot"
+
+  declare -A existing
+  existing["_bogus"]=true
+  while IFS= read -r sk; do
+    existing["$sk"]=true
+  done < <(skills list -g --json | jq -r '.[] | .name')
+
+  for skill in "${!skills[@]}"; do
+    if [[ ! -n "${existing[$skill]+x}" ]]; then
+      echo >&2 "* installing ${skills[$skill]}@/${skill}"
+      skills add -y -g "${skills[$skill]}@${skill}" >/dev/null
+    else
+      echo >&2 "- $skill already installed"
+    fi
+  done
 fi
+
+# no uv tools to install for now
+# if command -v uv &>/dev/null; then
+#   echo >&2 "* Installing uv tools"
+# else
+#   echo >&2 "!! Skipping install of uv tools uv is not in path"
+# fi
 
 
 if command -v flatpak &>/dev/null; then
