@@ -17,7 +17,6 @@ brew "lua"
 brew "minijinja-cli"
 brew "neovim"
 brew "prettier"
-brew "rbenv"
 brew "rclone"
 brew "rename", link: false
 brew "ripgrep"

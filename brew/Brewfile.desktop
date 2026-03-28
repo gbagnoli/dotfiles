@@ -25,7 +25,6 @@ brew "opencode"
 brew "pandoc"
 brew "podlet"
 brew "prettier"
-brew "rbenv"
 brew "rclone"
 brew "rename", link: false
 brew "ruby"
