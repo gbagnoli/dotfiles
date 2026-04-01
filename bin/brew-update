@@ -6,7 +6,7 @@ if command -v brew >/dev/null; then
   echo >&2 "* brew upgrade"
   brew upgrade
   echo >&2 "* brew cleanup"
-  brew cleanup
+  brew cleanup --prune=all
 
   # update also uv tools
   if command -v uv &>/dev/null; then
