@@ -242,6 +242,7 @@ fi
 
 alias tmux="tmux -2"
 alias tz="tzbuddy -s 6"
+alias glow="glow -s light"
 
 if command -v vim &>/dev/null; then
   EDITOR="$(command -v vim)"
