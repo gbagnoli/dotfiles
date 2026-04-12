@@ -5,6 +5,7 @@ brew "bat"
 brew "util-linux", link: false
 brew "direnv"
 brew "dysk"
+brew "et"
 brew "eza"
 brew "fd"
 brew "fzf"
