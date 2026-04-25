@@ -17,8 +17,12 @@ if command -v brew >/dev/null; then
   fi
 
   if command -v skills &>/dev/null; then
-    echo >&2 "* update skills"
-    skills update
+    if ! skills list -g 2>&1 | grep -q "No global skills found"; then
+      echo >&2 "* update skills"
+      skills update -g
+    else
+      echo >&2 "* no skills to upgrade"
+    fi
   fi
 
   if [ -L "$0" ] && [ -L "${HOME}/.config/Brewfile" ]; then
