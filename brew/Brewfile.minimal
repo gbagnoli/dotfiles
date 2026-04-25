@@ -27,7 +27,6 @@ brew "rust-analyzer"
 brew "rustup"
 brew "shellcheck"
 brew "tealdeer"
-brew "television", link: false
 brew "tidy-viewer"
 brew "tmux"
 brew "ugrep"

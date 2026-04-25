@@ -37,7 +37,6 @@ brew "skills"
 brew "starship"
 brew "stress-ng"
 brew "tealdeer"
-brew "television", link: false
 brew "tidy-viewer"
 brew "tmux"
 brew "trash-cli"
