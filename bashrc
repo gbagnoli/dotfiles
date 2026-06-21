@@ -115,6 +115,8 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 alias tv="tv -c 5"
+# gcloud cli via podman
+alias gcloud="podman run --rm -ti --name gcloud-cli gcr.io/google.com/cloudsdktool/google-cloud-cli:stable gcloud"
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
