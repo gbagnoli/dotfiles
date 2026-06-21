@@ -1,4 +1,5 @@
 tap "gbagnoli/tzbuddy"
+brew "antigravity-cli"
 brew "autoenv"
 brew "bash-preexec"
 brew "bat"
